@@ -648,7 +648,7 @@
       // ======================================================
       // COLOQUE AQUI A SUA URL DO WEB APP GERADA NO CODES.GS
       // ======================================================
-      const URL_PLANILHA_CENTRAL = "https://script.google.com/macros/s/AKfycbyJoJpo5eh5SqJdV0tJ2OhoPMCUvYVsUaHDmQLY2Dl7ACn1cBZFb3Ei4shTjGlW6uHG/exec";
+      const URL_WEBAPP = "https://script.google.com/macros/s/AKfycbyXR5IO90Ls2dWH6MTD9EVmtIfp33nqyIzOu8QZy9mitODwlksbteauteBTtbCuWr0X/exec";
 
       let alunoAtual = {};
       let contadorDisciplinas = 0;
@@ -739,7 +739,7 @@
       }
 
 // CORREÇÃO NATALINA: REMOVIDO O FETCH FANTASMA PARA ACABAR COM O NETWORKERROR
-const URL_API = "https://script.google.com/macros/s/AKfycbyJoJpo5eh5SqJdV0tJ2OhoPMCUvYVsUaHDmQLY2Dl7ACn1cBZFb3Ei4shTjGlW6uHG/exec";
+const URL_API = "https://script.google.com/macros/s/AKfycbyXR5IO90Ls2dWH6MTD9EVmtIfp33nqyIzOu8QZy9mitODwlksbteauteBTtbCuWr0X/exec";
 
 async function procurarMatricula() {
   let mat = document.getElementById("matriculaBusca").value.trim();
@@ -850,7 +850,7 @@ function salvarAlteracoesFicha() {
         btnSalvar.innerText = "⏳ Gravando..."; btnSalvar.disabled = true;
 
         // CANAL DIRETO COM O CODIGO.GS PARA SALVAR DE A ATÉ R
-fetch(URL_WEBAPP, {
+fetch(URL_PLANILHA_CENTRAL, {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -1236,15 +1236,15 @@ function gerarRelatorioAlunos() {
         corpo.innerHTML = `<tr><td colspan="7" class="text-center text-orange-500 fw-bold">⏳ Carregando dados da planilha central...</td></tr>`;
         document.getElementById("blocoResultadoRelatorio").classList.remove("oculto");
 
-        google.script.run
-          .withSuccessHandler(function(alunos) {
-            renderizarTabelaRelatorio(alunos);
-          })
-          .withFailureHandler(function(erro) {
-            alert("Erro ao puxar relatório do servidor: " + erro);
-          })
-          .obterDadosParaRelatorio();
-      }
+fetch(URL_PLANILHA + "?api=dados")
+  .then(r => r.json())
+  .then(alunos => {
+    renderizarTabelaRelatorio(alunos);
+  })
+  .catch(erro => {
+    console.error(erro);
+    alert("Erro ao puxar relatório da planilha.");
+  });
 
       function renderizarTabelaRelatorio(alunos) {
         let corpo = document.getElementById("corpoRelatorio");
