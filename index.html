@@ -1232,51 +1232,89 @@ fetch(URL_API, {
       
       function mudarTela(atual, nova) { document.getElementById(atual).classList.add("oculto"); document.getElementById(nova).classList.remove("oculto"); }
 function gerarRelatorioAlunos() {
-        let corpo = document.getElementById("corpoRelatorio");
-        corpo.innerHTML = `<tr><td colspan="7" class="text-center text-orange-500 fw-bold">⏳ Carregando dados da planilha central...</td></tr>`;
-        document.getElementById("blocoResultadoRelatorio").classList.remove("oculto");
 
-fetch(URL_PLANILHA + "?api=dados")
-  .then(r => r.json())
-  .then(alunos => {
-    renderizarTabelaRelatorio(alunos);
-  })
-  .catch(erro => {
-    console.error(erro);
-    alert("Erro ao puxar relatório da planilha.");
+  let corpo = document.getElementById("corpoRelatorio");
+
+  corpo.innerHTML = `
+    <tr>
+      <td colspan="7" class="text-center text-orange-500 fw-bold">
+        ⏳ Carregando dados da planilha central...
+      </td>
+    </tr>
+  `;
+
+  document.getElementById("blocoResultadoRelatorio")
+    .classList.remove("oculto");
+
+  fetch(URL_API + "?api=dados")
+    .then(r => r.json())
+    .then(alunos => {
+      renderizarTabelaRelatorio(alunos);
+    })
+    .catch(erro => {
+      console.error(erro);
+      alert("Erro ao puxar relatório da planilha.");
+    });
+
+} // FECHOU AQUI
+
+
+function renderizarTabelaRelatorio(alunos) {
+
+  let corpo = document.getElementById("corpoRelatorio");
+
+  corpo.innerHTML = "";
+
+  if (!alunos || alunos.length === 0) {
+
+    corpo.innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center text-muted">
+          Nenhum aluno localizado na planilha central.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  const ordemDias = {
+    "Segunda-feira": 1,
+    "Terça-feira": 2,
+    "Quarta-feira": 3,
+    "Quinta-feira": 4,
+    "Sexta-feira": 5,
+    "Sábado": 6
+  };
+
+  alunos.sort((a, b) => {
+
+    let diaA = ordemDias[a.diaSemana] || 99;
+    let diaB = ordemDias[b.diaSemana] || 99;
+
+    if (diaA !== diaB) {
+      return diaA - diaB;
+    }
+
+    return (a.horario || "").localeCompare(b.horario || "");
   });
 
-      function renderizarTabelaRelatorio(alunos) {
-        let corpo = document.getElementById("corpoRelatorio");
-        corpo.innerHTML = "";
+  alunos.forEach(aluno => {
 
-        if (!alunos || alunos.length === 0) {
-          corpo.innerHTML = `<tr><td colspan="7" class="text-center text-muted">Nenhum aluno localizado na planilha central.</td></tr>`;
-          return;
-        }
+    let tr = document.createElement("tr");
 
-        const ordemDias = { "Segunda-feira": 1, "Terça-feira": 2, "Quarta-feira": 3, "Quinta-feira": 4, "Sexta-feira": 5, "Sábado": 6 };
-        alunos.sort((a, b) => {
-          let diaA = ordemDias[a.diaSemana] || 99; let diaB = ordemDias[b.diaSemana] || 99;
-          if (diaA !== diaB) return diaA - diaB;
-          return (a.horario || "").localeCompare(b.horario || "");
-        });
+    tr.innerHTML = `
+      <td class="fw-bold text-dark">${aluno.nome || "-"}</td>
+      <td>${aluno.matricula || "-"}</td>
+      <td>${aluno.pacote || "-"}</td>
+      <td>${aluno.diaSemana || "-"}</td>
+      <td>${aluno.horario || "-"}</td>
+      <td class="fw-bold text-secondary">${aluno.frequenciaEstudos || "-"}</td>
+      <td class="fw-bold text-success">${aluno.modalidadeFin || "-"}</td>
+    `;
 
-        // Monta as linhas na ordem exata definida: Matrícula, Aluno, Curso, Dia, Horário, Frequência, Financeiro
-        alunos.forEach(aluno => {
-          let tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td class="fw-bold text-dark">${aluno.nome || "-"}</td>
-            <td>${aluno.matricula || "-"}</td>
-            <td>${aluno.pacote || "-"}</td>
-            <td>${aluno.diaSemana || "-"}</td>
-            <td>${aluno.horario || "-"}</td>
-            <td class="fw-bold text-secondary">${aluno.frequenciaEstudos || "-"}</td>
-            <td class="fw-bold text-success">${aluno.modalidadeFin || "-"}</td>
-          `;
-          corpo.appendChild(tr);
-        });
-      }
-    </script>
-  </body>
-</html>
+    corpo.appendChild(tr);
+
+  });
+
+}
