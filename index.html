@@ -850,7 +850,7 @@ function salvarAlteracoesFicha() {
         btnSalvar.innerText = "⏳ Gravando..."; btnSalvar.disabled = true;
 
         // CANAL DIRETO COM O CODIGO.GS PARA SALVAR DE A ATÉ R
-fetch(URL_PLANILHA_CENTRAL, {
+fetch(URL_API, {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
