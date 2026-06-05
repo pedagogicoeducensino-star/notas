@@ -984,10 +984,6 @@
 
 function abrirFichaComDadosProntos() {
         carregandoFicha = true;
-        
-        // 🚨 BLINDAGEM VISUAL CRÍTICA: Força o sumiço absoluto da tela de login para evitar sobreposições
-        document.getElementById("telaLogin").classList.add("oculto");
-        
         document.getElementById("lblNome").innerText = alunoAtual.nome;
         document.getElementById("lblMatricula").innerText = alunoAtual.matricula;
         document.getElementById("lblTurno").innerText = alunoAtual.turno + " (" + alunoAtual.horario + ")";
@@ -1056,6 +1052,7 @@ function abrirFichaComDadosProntos() {
         recalcularTotaisPainel();
         mudarTela("telaPrincipal", "telaNotas");
         
+        // Finalização segura: ficha aberta e sem pendências falsas
         temAlteracoesPendentes = false; 
         carregandoFicha = false;
       }
