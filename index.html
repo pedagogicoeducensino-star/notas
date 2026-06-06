@@ -22,7 +22,14 @@
       
       .card-sistema { max-width: 1350px; margin: 20px auto; padding: 30px; box-shadow: 0px 6px 18px rgba(0,0,0,0.1); background: var(--cor-card); border-radius: 12px; border-top: 5px solid var(--escola-laranja); transition: border-color 0.3s ease, box-shadow 0.3s ease; }
       
-      .oculto { display: none !important; }
+      /* 🚨 BLINDAGEM CSS DEFINITIVA: Supera qualquer regra d-flex do Bootstrap */
+      .oculto,
+      #telaLogin.oculto,
+      #telaPrincipal.oculto,
+      #telaNotas.oculto,
+      .d-flex.oculto { 
+        display: none !important; 
+      }
         
       /* Temas Visuais Baseados no Status da Matrícula */
       body.status-cancelada { --cor-fundo: #fdf3f2; }
@@ -306,7 +313,7 @@
   <body>
 
     <div class="container">
-       
+        
       <div id="telaLogin" class="d-flex flex-wrap justify-content-center align-items-start gap-4" style="max-width: 1050px; margin: 30px auto; padding: 0 15px;">
         
         <div class="card-sistema" style="max-width: 450px; width: 100%; margin: 0; border-top: 5px solid var(--escola-preto);">
@@ -982,8 +989,12 @@
         marcarAlteracao();
       }
 
-function abrirFichaComDadosProntos() {
+      function abrirFichaComDadosProntos() {
         carregandoFicha = true;
+        
+        // 🚨 BLINDAGEM VISUAL CRÍTICA: Força o sumiço absoluto da tela de login para evitar sobreposições
+        document.getElementById("telaLogin").classList.add("oculto");
+        
         document.getElementById("lblNome").innerText = alunoAtual.nome;
         document.getElementById("lblMatricula").innerText = alunoAtual.matricula;
         document.getElementById("lblTurno").innerText = alunoAtual.turno + " (" + alunoAtual.horario + ")";
@@ -1227,6 +1238,9 @@ function abrirFichaComDadosProntos() {
           });
           alert("🗑️ Ficha do aluno excluída!");
           btnExcluir.innerText = "🗑️ Excluir Ficha"; btnExcluir.disabled = false;
+          
+          // Zera a alteração pendente para permitir a volta sem aviso
+          temAlteracoesPendentes = false;
           voltarParaPainel(); 
         } catch (err) {
           btnExcluir.innerText = "🗑️ Excluir Ficha"; btnExcluir.disabled = false;
@@ -1319,6 +1333,7 @@ function abrirFichaComDadosProntos() {
           lblData.className = "text-warning fw-bold";
         }
       }
+      
       function gerarRelatorioFinal() { window.print(); }
 
       function avancarParaNotas() {
@@ -1342,12 +1357,23 @@ function abrirFichaComDadosProntos() {
         abrirFichaComDadosProntos();
       }
 
+      // 🚨 FUNÇÃO MODIFICADA: Limpa resíduos para não "misturar" telas
       function voltarParaPainel() { 
         if (temAlteracoesPendentes) { alert("⚠️ Existem alterações não salvas!"); return; }
+        
+        // Esconde blocos que podem ter ficado abertos antes de carregar a ficha
+        document.getElementById("resultadoNaoEncontrado").classList.add("oculto");
+        document.getElementById("blocoCadastroRapido").classList.add("oculto");
+        document.getElementById("blocoResultadoRelatorio").classList.add("oculto");
+        document.getElementById("matriculaBusca").value = "";
+        
         mudarTela("telaNotas", "telaPrincipal"); 
       }
       
-      function mudarTela(atual, nova) { document.getElementById(atual).classList.add("oculto"); document.getElementById(nova).classList.remove("oculto"); }
+      function mudarTela(atual, nova) { 
+        document.getElementById(atual).classList.add("oculto"); 
+        document.getElementById(nova).classList.remove("oculto"); 
+      }
 
       let dadosAlunosRelatorioCache = [];
       async function gerarRelatorioAlunos() {
@@ -1397,7 +1423,14 @@ function abrirFichaComDadosProntos() {
         });
       }
 
+      // 🚨 FUNÇÃO MODIFICADA: Limpeza geral ao sair do sistema
       function encerrarSessao() {
+        document.getElementById("resultadoNaoEncontrado").classList.add("oculto");
+        document.getElementById("blocoCadastroRapido").classList.add("oculto");
+        document.getElementById("blocoResultadoRelatorio").classList.add("oculto");
+        document.getElementById("matriculaBusca").value = "";
+        document.getElementById("codigoColaborador").value = "";
+        
         document.getElementById("telaPrincipal").classList.add("oculto");
         document.getElementById("telaLogin").classList.remove("oculto");
       }
