@@ -22,7 +22,6 @@
       
       .card-sistema { max-width: 1350px; margin: 20px auto; padding: 30px; box-shadow: 0px 6px 18px rgba(0,0,0,0.1); background: var(--cor-card); border-radius: 12px; border-top: 5px solid var(--escola-laranja); transition: border-color 0.3s ease, box-shadow 0.3s ease; }
       
-      /* 🚨 BLINDAGEM CSS DEFINITIVA: Supera qualquer regra d-flex do Bootstrap */
       .oculto,
       #telaLogin.oculto,
       #telaPrincipal.oculto,
@@ -537,7 +536,7 @@
               <span id="lblStatusMatricula" class="badge bg-success mb-2 px-3 py-1">Ativa</span>
               <div class="mt-1">
                 <span class="print-meta-label d-none">Matrícula</span>
-                <strong style="font-size:11px;">Matrícula:</strong> <span id="lblMatricula" class="fw-bold print-meta-value text-secondary"></span>
+                <strong style="font-size11px;">Matrícula:</strong> <span id="lblMatricula" class="fw-bold print-meta-value text-secondary"></span>
               </div>
             </div>
             <div class="col-md-3 border-end">
@@ -865,11 +864,11 @@
       function limparCamposCadastroRapido() {
         let matriculaInput = document.getElementById("cadMatricula");
         let nomeInput = document.getElementById("cadNome");
-        let pacoteInput = document.getElementById("cadPacote");
+        let JoinInput = document.getElementById("cadPacote");
 
         if (matriculaInput) matriculaInput.value = "";
         if (nomeInput) nomeInput.value = "";
-        if (pacoteInput) pacoteInput.value = "";
+        if (JoinInput) JoinInput.value = "";
 
         let turnoSelect = document.getElementById("cadTurno");
         let diaSelect = document.getElementById("cadDiaSemana");
@@ -992,7 +991,6 @@
       function abrirFichaComDadosProntos() {
         carregandoFicha = true;
         
-        // 🚨 BLINDAGEM VISUAL CRÍTICA: Força o sumiço absoluto da tela de login para evitar sobreposições
         document.getElementById("telaLogin").classList.add("oculto");
         
         document.getElementById("lblNome").innerText = alunoAtual.nome;
@@ -1063,7 +1061,6 @@
         recalcularTotaisPainel();
         mudarTela("telaPrincipal", "telaNotas");
         
-        // Finalização segura: ficha aberta e sem pendências falsas
         temAlteracoesPendentes = false; 
         carregandoFicha = false;
       }
@@ -1102,6 +1099,30 @@
         if (!novoNome || !novoPacote) return alert("Por favor, preencha o Nome e o Pacote!");
         if (!tabelaQuantitativoCursos[novoPacote]) return alert("O pacote informado não consta na matriz oficial!");
 
+        // Detecta se houve mudança no pacote de curso
+        let pacoteMudou = (alunoAtual.pacote !== novoPacote);
+
+        // Se mudou o pacote, varremos a tela salvando as disciplinas e notas atuais para aproveitamento seguro
+        let disciplinasLista = [];
+        document.querySelectorAll(".linha-disciplina").forEach(linha => {
+          let id = inlineId(linha.id);
+          let nomeD = document.getElementById(`disc_nome_${id}`).value.trim();
+          if (nomeD !== "") {
+            disciplinasLista.push({
+              nome: nomeD,
+              ch: document.getElementById(`disc_ch_${id}`).value,
+              dataRegistro: document.getElementById(`disc_data_${id}`).value,
+              nTeo: document.getElementById(`n_teo_${id}`).value,
+              nDes: document.getElementById(`n_des_${id}`).value,
+              nSoc: document.getElementById(`n_soc_${id}`).value,
+              nPra: document.getElementById(`n_pra_${id}`).value,
+              mFinal: document.getElementById(`n_med_${id}`).value,
+              situacao: document.getElementById(`n_sit_${id}`).innerText
+            });
+          }
+        });
+        alunoAtual.disciplinas = disciplinasLista;
+
         alunoAtual.nome = novoNome;
         alunoAtual.turno = novoTurno;
         alunoAtual.horario = novoHorario;
@@ -1118,7 +1139,51 @@
         document.getElementById("lblModalidadeFinanceira").innerText = alunoAtual.modalidadeFin;
         document.getElementById("lblFrequenciaEstudos").innerText = alunoAtual.frequenciaEstudos;
         
+        let qtdPrevista = tabelaQuantitativoCursos[alunoAtual.pacote] || 0;
+        document.getElementById("lblQtdMinimaCurso").innerText = `Total Módulos Previstos: ${qtdPrevista}`;
+        
         aplicarTemaStatusMatricula(alunoAtual.statusMatricula);
+
+        // Se o pacote mudou, executa a reconstrução inteligente da grade de módulos
+        if (pacoteMudou) {
+          carregandoFicha = true; // Bloqueia dataRegistro automática temporariamente
+          document.getElementById("containerDisciplinas").innerHTML = "";
+          contadorDisciplinas = 0;
+
+          let MapNotasExistentes = {};
+          if (alunoAtual.disciplinas && alunoAtual.disciplinas.length > 0) {
+            alunoAtual.disciplinas.forEach(d => {
+              // Filtragem: guarda no mapa apenas disciplinas que possuam notas preenchidas pelo colaborador
+              if (d.nTeo !== "" || d.nDes !== "" || d.nSoc !== "" || d.nPra !== "") {
+                MapNotasExistentes[d.nome] = d;
+              }
+            });
+          }
+
+          let listaMatrizOficial = matrizDisciplinasPorCurso[alunoAtual.pacote];
+          if (listaMatrizOficial && listaMatrizOficial.length > 0) {
+            listaMatrizOficial.forEach(nomeDaDisciplina => {
+              contadorDisciplinas++;
+              let chPadrao = (mapaCargaHoraria[nomeDaDisciplina] !== undefined) ? mapaCargaHoraria[nomeDaDisciplina] + "h" : "0h";
+              
+              // Se a disciplina do novo curso já tiver notas do histórico/aproveitamento, ela entra preenchida
+              if (MapNotasExistentes[nomeDaDisciplina]) {
+                let dadosAntigos = MapNotasExistentes[nomeDaDisciplina];
+                if (dadosAntigos.ch !== chPadrao) { dadosAntigos.ch = chPadrao; }
+                renderizarEstruturaLinha(contadorDisciplinas, dadosAntigos);
+                calcularMediaLinha(contadorDisciplinas);
+              } else {
+                // Se não possuir notas, entra vazia como manda a matriz do novo curso
+                renderizarEstruturaLinha(contadorDisciplinas, { nome: nomeDaDisciplina, ch: chPadrao, nTeo: "", nDes: "", nSoc: "", nPra: "", mFinal: "", situacao: "-" });
+              }
+            });
+          } else { 
+            adicionarNovaLinhaDisciplina(); 
+          }
+          carregandoFicha = false;
+        }
+
+        recalcularTotaisPainel();
         marcarAlteracao();
         cancelarEdicaoCabecalho();
       }
@@ -1239,7 +1304,6 @@
           alert("🗑️ Ficha do aluno excluída!");
           btnExcluir.innerText = "🗑️ Excluir Ficha"; btnExcluir.disabled = false;
           
-          // Zera a alteração pendente para permitir a volta sem aviso
           temAlteracoesPendentes = false;
           voltarParaPainel(); 
         } catch (err) {
@@ -1357,11 +1421,9 @@
         abrirFichaComDadosProntos();
       }
 
-      // 🚨 FUNÇÃO MODIFICADA: Limpa resíduos para não "misturar" telas
       function voltarParaPainel() { 
         if (temAlteracoesPendentes) { alert("⚠️ Existem alterações não salvas!"); return; }
         
-        // Esconde blocos que podem ter ficado abertos antes de carregar a ficha
         document.getElementById("resultadoNaoEncontrado").classList.add("oculto");
         document.getElementById("blocoCadastroRapido").classList.add("oculto");
         document.getElementById("blocoResultadoRelatorio").classList.add("oculto");
@@ -1423,7 +1485,6 @@
         });
       }
 
-      // 🚨 FUNÇÃO MODIFICADA: Limpeza geral ao sair do sistema
       function encerrarSessao() {
         document.getElementById("resultadoNaoEncontrado").classList.add("oculto");
         document.getElementById("blocoCadastroRapido").classList.add("oculto");
