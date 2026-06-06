@@ -1099,10 +1099,8 @@
         if (!novoNome || !novoPacote) return alert("Por favor, preencha o Nome e o Pacote!");
         if (!tabelaQuantitativoCursos[novoPacote]) return alert("O pacote informado não consta na matriz oficial!");
 
-        // Detecta se houve mudança no pacote de curso
         let pacoteMudou = (alunoAtual.pacote !== novoPacote);
 
-        // Se mudou o pacote, varremos a tela salvando as disciplinas e notas atuais para aproveitamento seguro
         let disciplinasLista = [];
         document.querySelectorAll(".linha-disciplina").forEach(linha => {
           let id = inlineId(linha.id);
@@ -1144,17 +1142,16 @@
         
         aplicarTemaStatusMatricula(alunoAtual.statusMatricula);
 
-        // Se o pacote mudou, executa a reconstrução inteligente da grade de módulos
         if (pacoteMudou) {
-          carregandoFicha = true; // Bloqueia dataRegistro automática temporariamente
+          carregandoFicha = true; 
           document.getElementById("containerDisciplinas").innerHTML = "";
           contadorDisciplinas = 0;
 
+          // Mapa das disciplinas que já possuem alguma nota ou que o aluno completou (para não sumirem da ficha)
           let MapNotasExistentes = {};
           if (alunoAtual.disciplinas && alunoAtual.disciplinas.length > 0) {
             alunoAtual.disciplinas.forEach(d => {
-              // Filtragem: guarda no mapa apenas disciplinas que possuam notas preenchidas pelo colaborador
-              if (d.nTeo !== "" || d.nDes !== "" || d.nSoc !== "" || d.nPra !== "") {
+              if (d.nTeo.trim() !== "" || d.nDes.trim() !== "" || d.nSoc.trim() !== "" || d.nPra.trim() !== "") {
                 MapNotasExistentes[d.nome] = d;
               }
             });
@@ -1162,24 +1159,37 @@
 
           let listaMatrizOficial = matrizDisciplinasPorCurso[alunoAtual.pacote];
           if (listaMatrizOficial && listaMatrizOficial.length > 0) {
+            // Loop 1: Monta as matérias oficiais do curso novo
             listaMatrizOficial.forEach(nomeDaDisciplina => {
               contadorDisciplinas++;
               let chPadrao = (mapaCargaHoraria[nomeDaDisciplina] !== undefined) ? mapaCargaHoraria[nomeDaDisciplina] + "h" : "0h";
               
-              // Se a disciplina do novo curso já tiver notas do histórico/aproveitamento, ela entra preenchida
               if (MapNotasExistentes[nomeDaDisciplina]) {
                 let dadosAntigos = MapNotasExistentes[nomeDaDisciplina];
                 if (dadosAntigos.ch !== chPadrao) { dadosAntigos.ch = chPadrao; }
                 renderizarEstruturaLinha(contadorDisciplinas, dadosAntigos);
                 calcularMediaLinha(contadorDisciplinas);
+                
+                // Remove do mapa para sabermos que já foi encaixada na nova grade
+                delete MapNotasExistentes[nomeDaDisciplina];
               } else {
-                // Se não possuir notas, entra vazia como manda a matriz do novo curso
                 renderizarEstruturaLinha(contadorDisciplinas, { nome: nomeDaDisciplina, ch: chPadrao, nTeo: "", nDes: "", nSoc: "", nPra: "", mFinal: "", situacao: "-" });
               }
             });
-          } else { 
-            adicionarNovaLinhaDisciplina(); 
           }
+
+          // Loop 2: Matérias que sobraram no mapa (ou seja, antigas COM NOTAS que não fazem parte do curso novo) 
+          // vão ser injetadas logo em seguida para não sumirem da ficha.
+          Object.values(MapNotasExistentes).forEach(dadosAntigos => {
+            contadorDisciplinas++;
+            renderizarEstruturaLinha(contadorDisciplinas, dadosAntigos);
+            calcularMediaLinha(contadorDisciplinas);
+          });
+
+          if (!listaMatrizOficial || listaMatrizOficial.length === 0) {
+             if (Object.keys(MapNotasExistentes).length === 0) adicionarNovaLinhaDisciplina(); 
+          }
+
           carregandoFicha = false;
         }
 
