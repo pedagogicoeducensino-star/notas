@@ -1465,14 +1465,48 @@
           document.getElementById("corpoRelatorio").innerHTML = "";
       }
 
-      function reordenarDadosRelatorio() {
+function reordenarDadosRelatorio() {
         if (!dadosAlunosRelatorioCache.length) return;
         let criterio = document.getElementById("ordenarRelatorio").value;
+
+        // Criamos um mapa de pesos para o sistema entender a ordem cronológica dos dias
+        const pesoDia = {
+          "Segunda-feira": 1,
+          "Terça-feira": 2,
+          "Quarta-feira": 3,
+          "Quinta-feira": 4,
+          "Sexta-feira": 5,
+          "Sábado": 6,
+          "Domingo": 7
+        };
+
         dadosAlunosRelatorioCache.sort((a, b) => {
+           // Ordenações em Ordem Alfabética e Numérica
            if (criterio === "nome") return (a.nome || "").localeCompare(b.nome || "");
            if (criterio === "matricula") return (parseInt(a.matricula) || 0) - (parseInt(b.matricula) || 0);
+           if (criterio === "curso") return (a.pacote || "").localeCompare(b.pacote || "");
+           if (criterio === "frequencia") return (a.frequenciaEstudos || "").localeCompare(b.frequenciaEstudos || "");
+           if (criterio === "financeiro") return (a.modalidadeFin || "").localeCompare(b.modalidadeFin || "");
+           
+           // Lógica especial para Dia e Horário
+           if (criterio === "diaHorario") {
+              let diaA = pesoDia[a.diaSemana] || 99; // Se vier vazio, joga pro final da lista (99)
+              let diaB = pesoDia[b.diaSemana] || 99;
+              
+              // Primeiro organiza pelos dias da semana
+              if (diaA !== diaB) {
+                  return diaA - diaB;
+              }
+              
+              // Se for no mesmo dia, organiza pelo horário (como o formato é "07:00 as 09:00", o localeCompare resolve perfeitamente)
+              let horaA = a.horario || "";
+              let horaB = b.horario || "";
+              return horaA.localeCompare(horaB);
+           }
+
            return 0;
         });
+        
         renderizarTabelaRelatorio(dadosAlunosRelatorioCache);
       }
 
