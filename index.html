@@ -5,6 +5,8 @@
     <title>Sistema de Controle de Notas</title>
     <base target="_top">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Adicionando SweetAlert2 para os alertas elegantes -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
       :root {
         --cor-fundo: #f4f5f7;
@@ -536,7 +538,7 @@
               <span id="lblStatusMatricula" class="badge bg-success mb-2 px-3 py-1">Ativa</span>
               <div class="mt-1">
                 <span class="print-meta-label d-none">Matrícula</span>
-                <strong style="font-size11px;">Matrícula:</strong> <span id="lblMatricula" class="fw-bold print-meta-value text-secondary"></span>
+                <strong style="font-size:11px;">Matrícula:</strong> <span id="lblMatricula" class="fw-bold print-meta-value text-secondary"></span>
               </div>
             </div>
             <div class="col-md-3 border-end">
@@ -727,6 +729,26 @@
         "Administração - V6": 14, "Administração - V5": 12, "Administração - V4": 12, "Administração - V3": 12, "Atendimento ao Cliente - V5": 8, "Atendimento ao Cliente - V4": 8, "Gestão do Tempo - V5": 8, "Gestão do Tempo": 8, "Inteligência Emocional - V5": 6, "Inteligência Emocional - V4": 6, "Empreendedorismo - V4": 8, "Recursos Humanos - V5": 8, "Recursos Humanos - V4": 8, "Departamento Pessoal - V5": 10, "Departamento Pessoal - V4": 8, "Departamento Pessoal - V3": 12, "Liderança e Gestão de Pessoas na Prática - V5": 8, "Liderança e Gestão de Pessoas na Prática - V4": 8, "Liderança e Gestão de Pessoas na Prática - V1": 3, "Logística - V5": 10, "Logística - V4": 12, "Empregabilidade - V1": 14, "Informática Para Adultos - V6": 34, "Informática Para Adultos - V5": 30, "Informática para Adultos - V4": 32, "Relações Humanas, Comunicação e Feedback - V1": 8, "Balconista de Farmácia - V5": 14, "Balconista de Farmácia - V4": 14, "Balconista de Farmácia - V3": 8, "Vendas - V6": 12, "Vendas - V5": 12, "Vendas - V4": 12, "Vendas - V3": 8, "Cuidador de Idosos - V1": 8, "Oratória - V5": 20, "Oratória - V4": 22, "Introdução à Inteligência Artificial - V5": 6, "Introdução à Inteligência Artificial - V4": 6, "Games: Construct 3": 30, "Games: Construct 2 - Básico": 32, "Games: Construct 2 - Intermediário": 20, "Animate": 24, "Animate CC": 24, "After Effects - 2019": 24, "CorelDRAW - 2025": 24, "CorelDRAW - 2021": 16, "CorelDRAW - 2018": 24, "CorelDRAW - X7": 24, "Photoshop - 2024": 30, "Photoshop - 2022": 28, "Photoshop - 2020": 28, "Photoshop - CS6": 24, "Photoshop - CS6 - Projetos": 12, "Photoshop - CC 2018": 24, "Photoshop 2022 para Fotografia": 24, "Photoshop CC 2018 para Fotografia": 24, "Illustrator - 2022": 24, "Illustrator - CC 2015": 24, "Illustrator - CS6": 24, "Lightroom Classic": 12, "InDesign - 2023": 20, "InDesign CC - 2015": 24, "InDesign - CS6": 24, "Introdução à Informática - V3": 4, "Windows 11 - 2024": 22, "Windows 11": 20, "Windows 10 - V1809": 20, "Windows 10 - V1709": 20, "Windows - 8.1": 20, "Windows - 7": 24, "Word 365 - V1": 24, "Word - 2019": 24, "Word - 2016": 24, "Word - 2016 - Avançado - TCC": 24, "PowerPoint 365 - V2": 24, "PowerPoint 365 - V1": 24, "PowerPoint - 2019": 24, "PowerPoint - 2016": 24, "Excel 365 - V1": 24, "Excel - 2019": 24, "Excel - 2016": 24, "Digitação": 8, "Informática Kids - V6": 40, "Informática Kids - V5": 48, "Informática Kids - V4": 48, "Informática Kids - V3": 48, "Internet - V7": 22, "Internet - V6": 18, "Internet - V5": 12, "Marketing Digital para Iniciantes - V6": 10, "Marketing Digital para Iniciantes - V5": 10, "Marketing Digital para Iniciantes - V4": 10, "Educação Financeira para Jovens - V1": 10, "Canva - V2": 16, "Canva - V1": 20, "CapCut - V1": 18, "Youtuber": 24, "Matemática Financeira - V2": 12, "Matemática Financeira - V1": 30, "Operador de Caixa - V4": 6, "Operador de Caixa - V3": 6, "Gestão da Qualidade - V5": 12, "Gestão da Qualidade - V4": 12, "Lógica de Programação - V2": 16, "Lógica de Programação": 12, "Python para Iniciantes - V1": 24, "HTML e CSS": 20, "JavaScript - Básico - V1": 20, "PHP - Básico - V2": 22, "PHP e MySQL - V1": 26, "Secretariado - V5": 12, "Secretariado - V4": 12, "Secretariado - V3": 12, "Telemarketing - V5": 12, "Telemarketing - V4": 12, "Telemarketing - V3": 12, "Contabilidade - V5": 8, "Contabilidade - V4": 8, "Contabilidade - V3": 12, "Marketing Pessoal - V5": 12, "Marketing Pessoal - V4": 12, "Emprego - 2.0": 2, "Como Montar seu Currículo": 8, "SketchUp - 2023": 12, "Excel - 2019 - Avançado": 24, "Auxiliar Jurídico - V1": 10, "AutoCAD 2020 - 3D Civil": 32, "AutoCAD 2020 - Base": 26, "AutoCAD 2020 - Mecânica Base": 40, "AutoCAD 2020 - Projeto Civil": 28, "AutoCAD 2023 - 3D Civil": 28, "AutoCAD 2023 - Base": 26, "AutoCAD 2023 - Civil": 28, "AutoCAD 2023 - Mecânica Base": 40, "Dreamweaver CC": 24, "Edição para YouTube 2021": 32, "Enriquecendo com Investimentos - V1": 7, "Excel 2016 - Avançado": 24, "Excel 2016 - Dashboard": 26, "Excel 2019 - Avançado": 24, "Excel 2019 - Dashboard": 16, "Excel 2019 - Tabelas Dinâmicas": 16, "Excel 365 - Avançado - V1": 24, "Excel 365 - Dashboards - V1": 16, "Excel 365 - Tabelas Dinâmicas - V1": 16, "Express - 2016": 24, "Express - 2019": 24, "Express - 2023": 24, "Express - V6": 26, "Gemini Express - V1": 12, "Gestão de Projetos - V5": 12, "Gestão de Projetos - V4": 10, "Google Workspace - V1": 13, "HTML5": 24, "InDesign - CS6": 24, "Liderança 4.0 - V1": 10, "Outlook 365": 8, "PHP 5 - Básico": 24, "Power BI - V1": 16, "Power BI - V2": 16, "PowerPoint Express - V1": 8, "Premiere Pro 2019": 24, "SketchUp - 2015": 12, "SketchUp 2020 - Avançado": 8, "SketchUp 2020 - Free": 12, "SketchUp - 2025": 16, "Terceira Idade - Win 10": 30, "Técnicas de Redação - V3": 8
       };
 
+      // =============== FUNÇÃO CORRETORA DE DATAS DO GOOGLE SHEETS ===============
+      function higienizarNota(nota) {
+        if (nota === undefined || nota === null) return "";
+        let strNota = String(nota).trim();
+        
+        // 1. Detecta erro de formatação de data do Google Sheets (ex: 2026-02-09T03:00:00.000Z)
+        if (strNota.match(/^\d{4}-\d{2}-\d{2}T/) || strNota.includes("T03:00:00.000Z")) {
+          return ""; // Limpa a sujeira do erro para o funcionário poder digitar de novo
+        }
+        
+        // 2. Se for um número puro vindo do banco, garante que fica com vírgula para visualização
+        if (strNota !== "" && !isNaN(strNota.replace(",", "."))) {
+          let num = parseFloat(strNota.replace(",", "."));
+          return num.toFixed(1).replace(".", ",");
+        }
+        
+        return strNota;
+      }
+      // =========================================================================
+
       window.onload = function() {
         let dlCursos = document.getElementById("listaCursosOpcoes");
         dlCursos.innerHTML = "";
@@ -833,7 +855,7 @@
 
       async function procurarMatricula() {
         let mat = document.getElementById("matriculaBusca").value.trim();
-        if(!mat) { alert("Por favor, digite uma matrícula!"); return; }
+        if(!mat) { Swal.fire('Atenção', 'Por favor, digite uma matrícula!', 'warning'); return; }
         
         let btn = document.getElementById("btnBuscar");
         btn.innerText = "🔍 Buscando..."; 
@@ -858,7 +880,7 @@
           }
         } catch (err) {
           btn.innerText = "Buscar Aluno";
-          alert("Erro de comunicação com a API: " + err);
+          Swal.fire('Erro', 'Erro de comunicação com a API: ' + err, 'error');
         }
       }
 
@@ -910,6 +932,13 @@
       }
 
       async function salvarAlteracoesFicha() {
+        // Formatar e validar todas as notas para garantir que nenhuma data bugada suba pro banco
+        document.querySelectorAll('.campo-nota input[type="text"]').forEach(input => {
+            if (!input.classList.contains("campo-media-dinamica")) {
+                formatarMascaraNotaAoSair(input);
+            }
+        });
+
         let disciplinasLista = [];
         let erroNotas = false;
 
@@ -941,7 +970,7 @@
           }
         });
 
-        if (erroNotas) return alert("⚠️ Corrija as notas em vermelho antes de salvar!");
+        if (erroNotas) return Swal.fire('Atenção', 'Corrija as notas em vermelho antes de salvar!', 'warning');
 
         const btnSalvar = document.querySelector("button[onclick='salvarAlteracoesFicha()']");
         btnSalvar.innerText = "⏳ Gravando..."; btnSalvar.disabled = true;
@@ -971,11 +1000,11 @@
 
           temAlteracoesPendentes = false;
           btnSalvar.innerText = "💾 Salvar Alterações"; btnSalvar.disabled = false;
-          alert("💾 Ficha e Notas salvas com sucesso!");
+          Swal.fire('Sucesso!', 'Ficha e Notas salvas com sucesso!', 'success');
 
         } catch (err) {
           btnSalvar.innerText = "💾 Salvar Alterações"; btnSalvar.disabled = false;
-          alert("Erro ao salvar: " + err);
+          Swal.fire('Erro', 'Erro ao salvar: ' + err, 'error');
         }
       }
 
@@ -1097,8 +1126,8 @@
         let novaModalidade = document.getElementById("editCabModalidadeFin").value;
         let novaFrequencia = document.getElementById("editCabFrequenciaEstudos").value;
 
-        if (!novoNome || !novoPacote) return alert("Por favor, preencha o Nome e o Pacote!");
-        if (!tabelaQuantitativoCursos[novoPacote]) return alert("O pacote informado não consta na matriz oficial!");
+        if (!novoNome || !novoPacote) return Swal.fire('Atenção', 'Por favor, preencha o Nome e o Pacote!', 'warning');
+        if (!tabelaQuantitativoCursos[novoPacote]) return Swal.fire('Atenção', 'O pacote informado não consta na matriz oficial!', 'warning');
 
         let pacoteMudou = (alunoAtual.pacote !== novoPacote);
 
@@ -1204,6 +1233,8 @@
         let boxErro = input.parentNode.querySelector('.msg-erro-nota');
         if (boxErro) boxErro.remove();
         if (valStr === "") { input.classList.remove("nota-invalida"); return true; }
+        
+        // Converte pra validar a matemática internamente
         let num = parseFloat(valStr.replace(",", "."));
         if (isNaN(num) || num < 0 || num > 10) {
           input.classList.add("nota-invalida");
@@ -1216,8 +1247,21 @@
       function formatarMascaraNotaAoSair(input) {
         let valStr = input.value.trim();
         if (valStr === "") return;
+        
+        // ESSE CÓDIGO FORÇA O PONTO A VIRAR VÍRGULA LOGO APÓS A DIGITAÇÃO 
+        // EVITANDO QUE O GOOGLE SHEETS TRANSFORME EM DATA!
+        valStr = valStr.replace(".", ",");
+        
         let num = parseFloat(valStr.replace(",", "."));
-        if (!isNaN(num) && num >= 0 && num <= 10) input.value = num.toFixed(1).replace(".", ",");
+        
+        if (!isNaN(num) && num >= 0 && num <= 10) {
+          input.value = num.toFixed(1).replace(".", ",");
+          input.classList.remove("nota-invalida");
+          let boxErro = input.parentNode.querySelector('.msg-erro-nota');
+          if (boxErro) boxErro.remove();
+        } else {
+          input.value = ""; // Se for inválido demais, ele apaga pra evitar bugs
+        }
       }
 
       function calcularMediaLinha(id) {
@@ -1292,7 +1336,7 @@
         
         for (let i = 0; i < todasAsOpcoes.length; i++) {
           if (todasAsOpcoes[i].id !== `disc_nome_${id}` && todasAsOpcoes[i].value.trim() === valorSelecionado && valorSelecionado !== "") {
-            alert("⚠️ Esta disciplina já foi registrada para este aluno!");
+            Swal.fire('Atenção', 'Esta disciplina já foi registrada para este aluno!', 'warning');
             campo.value = ""; document.getElementById(`disc_ch_${id}`).value = "0h";
             recalcularTotaisPainel(); return;
           }
@@ -1302,7 +1346,19 @@
       }
 
       async function excluirFichaAluno() {
-        if (!confirm("⚠️ ATENÇÃO: Esta ação irá excluir TODOS os registros deste aluno na planilha central. Deseja continuar?")) return;
+        const result = await Swal.fire({
+          title: 'Atenção, Perigo!',
+          text: 'Esta ação irá excluir TODOS os registros deste aluno na planilha central. Deseja continuar?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sim, Excluir Definitivamente',
+          cancelButtonText: 'Cancelar'
+        });
+
+        if (!result.isConfirmed) return;
+        
         let btnExcluir = document.querySelector("button[onclick='excluirFichaAluno()']");
         btnExcluir.innerText = "⏳ Excluindo..."; btnExcluir.disabled = true;
 
@@ -1312,14 +1368,14 @@
             headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify({ acao: "excluirAluno", matricula: alunoAtual.matricula })
           });
-          alert("🗑️ Ficha do aluno excluída!");
+          Swal.fire('Excluído!', 'Ficha do aluno excluída com sucesso.', 'success');
           btnExcluir.innerText = "🗑️ Excluir Ficha"; btnExcluir.disabled = false;
           
           temAlteracoesPendentes = false;
           voltarParaPainel(); 
         } catch (err) {
           btnExcluir.innerText = "🗑️ Excluir Ficha"; btnExcluir.disabled = false;
-          alert("Erro ao excluir: " + err);
+          Swal.fire('Erro', 'Erro ao excluir: ' + err, 'error');
         }
       }
 
@@ -1351,23 +1407,23 @@
             <div class="grid-avaliacoes">
               <div class="campo-nota" data-label="AVALIAÇÃO TÉCNICA (PESO 40%)">
                 <label>Avaliação Teórica<br><span class="text-muted">40%</span></label>
-                <input type="text" class="form-control text-center fw-bold" id="n_teo_${id}" value="${d.nTeo || ''}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
+                <input type="text" class="form-control text-center fw-bold" id="n_teo_${id}" value="${higienizarNota(d.nTeo)}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
               </div>
               <div class="campo-nota" data-label="ATIV. DESEMPENHO (PESO 20%)">
                 <label>Atividades de Desempenho<br><span class="text-muted">20%</span></label>
-                <input type="text" class="form-control text-center fw-bold" id="n_des_${id}" value="${d.nDes || ''}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
+                <input type="text" class="form-control text-center fw-bold" id="n_des_${id}" value="${higienizarNota(d.nDes)}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
               </div>
               <div class="campo-nota" data-label="SOCIOEMOCIONAL (PESO 20%)">
                 <label>Avaliação Socioeducacional<br><span class="text-muted">20%</span></label>
-                <input type="text" class="form-control text-center fw-bold" id="n_soc_${id}" value="${d.nSoc || ''}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
+                <input type="text" class="form-control text-center fw-bold" id="n_soc_${id}" value="${higienizarNota(d.nSoc)}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
               </div>
               <div class="campo-nota" data-label="PRÁTICAS PROF. (PESO 20%)">
                 <label>Práticas Profissionalizantes<br><span class="text-muted">20%</span></label>
-                <input type="text" class="form-control text-center fw-bold" id="n_pra_${id}" value="${d.nPra || ''}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
+                <input type="text" class="form-control text-center fw-bold" id="n_pra_${id}" value="${higienizarNota(d.nPra)}" onchange="formatarMascaraNotaAoSair(this)" oninput="calcularMediaLinha(${id})">
               </div>
               <div class="campo-nota" data-label="Média da Disciplina">
                 <label style="color:#000;">Média da Disciplina</label>
-                <input type="text" class="form-control fw-bold bg-light text-center campo-media-dinamica" id="n_med_${id}" readonly value="${d.mFinal || ''}">
+                <input type="text" class="form-control fw-bold bg-light text-center campo-media-dinamica" id="n_med_${id}" readonly value="${higienizarNota(d.mFinal)}">
               </div>
               <div class="campo-nota" data-label="SITUAÇÃO">
                 <label style="color:#000;">Situação</label>
@@ -1380,11 +1436,22 @@
       }
 
       function removerLinhaDisciplina(id) {
-        if(confirm("Deseja remover esta disciplina?")) {
-          let elemento = document.getElementById(`bloco_disc_${id}`);
-          if(elemento) elemento.remove();
-          marcarAlteracao(); recalcularTotaisPainel();
-        }
+        Swal.fire({
+          title: 'Remover Disciplina?',
+          text: "Tem certeza de que deseja apagar essa disciplina do boletim?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sim, remover!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            let elemento = document.getElementById(`bloco_disc_${id}`);
+            if(elemento) elemento.remove();
+            marcarAlteracao(); recalcularTotaisPainel();
+          }
+        });
       }
 
       function atualizarHorariosExato(idTurno, idHorario) {
@@ -1422,10 +1489,10 @@
         let pacote = document.getElementById("cadPacote").value.trim();
 
         if (!mat || !nome || !turno || !horario || !diaSemana || !modalidadeFin || !frequenciaEstudos || !pacote) {
-          alert("⚠️ Erro de Cadastro: Todos os campos do cadastro rápido são obrigatórios!");
+          Swal.fire('Atenção', 'Todos os campos do cadastro rápido são obrigatórios!', 'warning');
           return;
         }
-        if(!tabelaQuantitativoCursos[pacote]) return alert("O pacote digitado não consta na matriz oficial!");
+        if(!tabelaQuantitativoCursos[pacote]) return Swal.fire('Atenção', 'O pacote digitado não consta na matriz oficial!', 'warning');
 
         alunoAtual = { matricula: mat, nome: nome, turno: turno, horario: horario, pacote: pacote, statusMatricula: "Ativa", diaSemana: diaSemana, modalidadeFin: modalidadeFin, frequenciaEstudos: frequenciaEstudos, disciplines: [] };
         limparCamposCadastroRapido(); 
@@ -1433,7 +1500,7 @@
       }
 
       function voltarParaPainel() { 
-        if (temAlteracoesPendentes) { alert("⚠️ Existem alterações não salvas!"); return; }
+        if (temAlteracoesPendentes) { Swal.fire('Atenção', 'Existem alterações não salvas! Salve a ficha antes de voltar.', 'warning'); return; }
         
         document.getElementById("resultadoNaoEncontrado").classList.add("oculto");
         document.getElementById("blocoCadastroRapido").classList.add("oculto");
@@ -1458,7 +1525,7 @@
             let alunos = await response.json();
             dadosAlunosRelatorioCache = alunos || [];
             reordenarDadosRelatorio();
-          } catch (erro) { alert("Erro: " + erro); }
+          } catch (erro) { Swal.fire('Erro', 'Ocorreu um erro ao carregar os relatórios: ' + erro, 'error'); }
       }
 
       function fecharRelatorio() {
@@ -1466,7 +1533,7 @@
           document.getElementById("corpoRelatorio").innerHTML = "";
       }
 
-function reordenarDadosRelatorio() {
+      function reordenarDadosRelatorio() {
         if (!dadosAlunosRelatorioCache.length) return;
         let criterio = document.getElementById("ordenarRelatorio").value;
 
@@ -1482,24 +1549,20 @@ function reordenarDadosRelatorio() {
         };
 
         dadosAlunosRelatorioCache.sort((a, b) => {
-           // Ordenações em Ordem Alfabética e Numérica
            if (criterio === "nome") return (a.nome || "").localeCompare(b.nome || "");
            if (criterio === "matricula") return (parseInt(a.matricula) || 0) - (parseInt(b.matricula) || 0);
            if (criterio === "curso") return (a.pacote || "").localeCompare(b.pacote || "");
            if (criterio === "frequencia") return (a.frequenciaEstudos || "").localeCompare(b.frequenciaEstudos || "");
            if (criterio === "financeiro") return (a.modalidadeFin || "").localeCompare(b.modalidadeFin || "");
            
-           // Lógica especial para Dia e Horário
            if (criterio === "diaHorario") {
-              let diaA = pesoDia[a.diaSemana] || 99; // Se vier vazio, joga pro final da lista (99)
+              let diaA = pesoDia[a.diaSemana] || 99; 
               let diaB = pesoDia[b.diaSemana] || 99;
               
-              // Primeiro organiza pelos dias da semana
               if (diaA !== diaB) {
                   return diaA - diaB;
               }
               
-              // Se for no mesmo dia, organiza pelo horário (como o formato é "07:00 as 09:00", o localeCompare resolve perfeitamente)
               let horaA = a.horario || "";
               let horaB = b.horario || "";
               return horaA.localeCompare(horaB);
